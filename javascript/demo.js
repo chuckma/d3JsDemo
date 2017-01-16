@@ -1,3 +1,4 @@
+/*不带坐标轴demo*/
 function drawSimpleBar() {
     /*创建画布*/
     var width = 300;    // 画布宽
@@ -26,6 +27,7 @@ function drawSimpleBar() {
 
     svg.selectAll("rect").style("fill", "red");
 }
+/*比例尺demo*/
 function drawScaleDemo() {
 
     var width = 300;	//画布的宽度
@@ -58,6 +60,7 @@ function drawScaleDemo() {
         .attr("fill", "steelblue");
 
 }
+/*坐标轴demo*/
 function drawAxisDemo() {
     var width = 300;	//画布的宽度
     var height = 300;	//画布的高度
@@ -98,12 +101,13 @@ function drawAxisDemo() {
 
 
 }
+/*完整的柱状图*/
 function drawEntireBar() {
     // 画布大小
     var width = 400;
     var height = 400;
     // body 里添加一个svg画布
-    var svg = d3.select("body")
+    var svg = d3.select("div", "#content")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
@@ -113,9 +117,9 @@ function drawEntireBar() {
 
     //定义一个数组
     var dataSet = [10, 20, 30, 40, 33, 24, 12, 5];
-    // 定义序数比例尺
+    // 定义序数比例尺 rangeRoundBands 类似于rangeBands 并通过四舍五入保证频段宽度和偏移量是整数
     var xScale = d3.scale.ordinal()
-        .domain(d3.range(dataSet.length))
+        .domain(d3.range(dataSet.length))   // [1,2,3,4...7]
         .rangeRoundBands([0, width - padding.left - padding.right]);
     // 定义线性比例尺
     var yScale = d3.scale.linear()
@@ -143,10 +147,23 @@ function drawEntireBar() {
             return xScale(i) + rectPadding / 2;
         })
         .attr("y", function (d) {
+            var min = yScale.domain()[0];
+            return yScale(min);
+        })
+        .attr("height", function (d) {
+            return 0;
+        })
+        .transition()
+        .delay(function (d, i) {
+            return i * 200;
+        })
+        .duration(2000)
+        .ease("bounce")     // 在最终状态时弹跳几次
+        .attr("y", function (d) {
             return yScale(d);
         })
-        .attr("rx","8")
-        .attr("ry","8")
+        .attr("rx", "8")
+        .attr("ry", "8")
         .attr("width", xScale.rangeBand() - rectPadding)
         .attr("height", function (d) {
             return height - padding.top - padding.bottom - yScale(d);
@@ -162,18 +179,29 @@ function drawEntireBar() {
         .attr("x", function (d, i) {
             return xScale(i) + rectPadding / 2;
         })
-        .attr("y", function (d) {
-            return yScale(d);
-        })
         .attr("dx", function () {
             return (xScale.rangeBand() - rectPadding) / 2;
         })
         .attr("dy", function (d) {
-            return 40;
+            return 20;
         })
         .text(function (d) {
             return d;
+        })
+        .attr("y", function (d) {
+            var min = yScale.domain()[0];
+            return yScale(min);
+        })
+        .transition()
+        .delay(function (d, i) {
+            return i * 200;
+        })
+        .duration(2000)
+        .ease("bounce")     // 弹跳效果
+        .attr("y", function (d) {
+            return yScale(d);
         });
+
 
     //添加x轴
     svg.append("g")
@@ -186,4 +214,23 @@ function drawEntireBar() {
         .attr("class", "axis")
         .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
         .call(yAxis);
+}
+/*理解updata enter exit*/
+function updateEnterExit() {
+    var width = 400;
+    var height = 400;
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+    var dataSet = [3];
+    //选择body中的p元素
+    var p = d3.select("body").selectAll("p");
+    var update = p.data(dataSet);
+    var exit = update.exit();
+    update.text(function (d) {
+        return "update" + d;
+    });
+    //exit部分的处理通常是删除元素
+    exit.remove();
 }
