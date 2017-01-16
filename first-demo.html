@@ -5,6 +5,26 @@
     <title>Title</title>
 </head>
 <body>
+<p>Apple</p>
+<p>Pear</p>
+<p>Banana</p>
+<p id="pp">allison</p>
+<p>alina</p>
+<p>Angelia</p>
+<script src="d3js/d3.js"></script>
+<script>
+    var str = "china";
+    var body = d3.select("body");
+    var p =body.selectAll("p");
 
+//    var dataSet = ["I like dogs","I like cats","I like snakes"];
+//    p.data(dataSet)
+//     .text(function (d,4) {
+//        return d;
+//    })
+   body.insert("p","#pp")
+           .text("dsfsdf");
+//    var p1 = body.select("#pp").remove();
+</script>
 </body>
 </html>
