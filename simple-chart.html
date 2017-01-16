@@ -2,14 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>D3JS Demo Test</title>
     <script src="d3js/d3.v3.js"></script>
     <script src="javascript/demo.js"></script>
     <style>
+        #content{
+            position: fixed;
+            right: 20px;
+            top: 10px;
+            width: 400px;
+            height: 400px;
+            border:solid 1px #eb4543;
+        }
         .axis path,
         .axis line{
             fill: none;
-            stroke: black;
+            stroke: #ff0000;  //black
             shape-rendering: crispEdges;    //  svg 的 渲染模式
         }
 
@@ -25,16 +33,20 @@
             fill: white;
             text-anchor: middle;
         }
-
     </style>
 
 </head>
 <body>
+<div id="content"></div>
+<p>111</p>
+<p>222</p>
+<p>333</p>
 <script>
     drawSimpleBar();
     drawScaleDemo();
     drawAxisDemo();
     drawEntireBar();
+    updateEnterExit();
 </script>
 </body>
 </html>
