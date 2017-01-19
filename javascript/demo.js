@@ -162,8 +162,8 @@ function drawEntireBar() {
         .attr("y", function (d) {
             return yScale(d);
         })
-        .attr("rx", "8")
-        .attr("ry", "8")
+        .attr("rx", "3")
+        .attr("ry", "3")
         .attr("width", xScale.rangeBand() - rectPadding)
         .attr("height", function (d) {
             return height - padding.top - padding.bottom - yScale(d);
