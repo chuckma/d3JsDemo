@@ -236,7 +236,7 @@ function updateEnterExit() {
 }
 /*彩色环*/
 function drawColorCycle(){
-    var width = Math.max(960, innerWidth);
+    var width = Math.max(960, innerWidth);   // Math.max 两者中取最大
     var height = Math.max(500, innerHeight);
 
     var i = 0;
@@ -251,18 +251,18 @@ function drawColorCycle(){
         .on("ontouchstart" in document ? "touchmove" : "mousemove", particle);
 
     function particle() {
-        var m = d3.mouse(this);
+        var m = d3.mouse(this);     //获取相对于指定容器的鼠标位置
 
         svg.insert("circle", "rect")
-            .attr("cx", m[0])
-            .attr("cy", m[1])
+            .attr("cx", m[0])   // 圆心坐标x  来自鼠标位置
+            .attr("cy", m[1])   // 圆心坐标y  来自鼠标位置
             .attr("r", 1e-6)
             .style("stroke", d3.hsl((i = (i + 1) % 360), 1, .5))
             .style("stroke-opacity", 1)
             .transition()
             .duration(2000)
             .ease(Math.sqrt)
-            .attr("r", 100)
+            .attr("r", 1000)
             .style("stroke-opacity", 1e-6)
             .remove();
 
