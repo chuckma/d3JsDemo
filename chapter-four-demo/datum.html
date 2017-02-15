@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择集与数据</title>
+    <script src="../d3js/d3.v3.js"></script>
+    <script src="../javascript/demo.js"></script>
+</head>
+<body>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<script>
+    var dataSet = [10, 20, 30, 49, 50];
+    var body = d3.select("body");
+    //    body.selectAll("p")     // 选择所有的body,但是由于没有p,因此选择了一个空集
+    //            .data(dataSet)  // 绑定dataSet数组
+    //            .enter()        // 返回enter 部分
+    //            .append("p")    // 添加p元素
+    //            .text(function (d) {
+    //                return d;
+    //            });
+
+    var dataSet1 = [99, 66, 45, 87, 100, 74];
+    var p = body.selectAll("p");
+    p.data(dataSet1)
+            .text(function (d) {
+                return d;
+            });
+    p.filter(function (d, i) {
+        if (d > 60) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    });
+</script>
+</body>
+</html>
