@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择集和数据</title>
+    <script src="d3js/d3.v3.js"></script>
+    <script src="javascript/demo.js"></script>
+</head>
+<body>
+<button type="button" onclick="mySort()">排序</button>
+<button type="button" onclick="myAdd()">增加数据</button>
+<script>
+    var numbers = [534, 343, 3, 2343, 122, 32];
+    //    numbers.sort(d3.ascending);   // 递增函数
+    //    numbers.sort(d3.descending);  // 递减函数
+    //    var mean = d3.mean(numbers);  // 求均值
+    //    d3.shuffle(numbers)           // 洗牌数组,重新排列
+    console.log(d3.shuffle(numbers));
+
+    var persons = [
+        {sex: '男', age: '28', name: '张xx'},
+        {sex: '男', age: '23', name: '刘xx'},
+        {sex: '男', age: '22', name: '王xx'},
+        {sex: '女', age: '18', name: '张xx'},
+        {sex: '女', age: '28', name: '李xx'},
+        {sex: '女', age: '26', name: '宋xx'}
+    ];
+    var nest = d3.nest()
+            .key(function (d) {
+                return d.sex;
+            })
+            .sortValues(function (a, b) {
+                return d3.ascending(a.age, b.age);
+            })
+            .entries(persons);
+    console.log(nest);
+    /*制作柱形图*/
+    var dataSet = [44, 34, 12, 5, 18, 67];
+    var width = 400;
+    var height = 400;
+
+    var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    var padding = {top: 20, right: 20, bottom: 20, left: 20};
+    var rectStep = 35;
+    var rectWith = 30;
+    var rect = svg.selectAll("rect")
+            .data(dataSet)
+            .enter()
+            .append("rect")
+            .attr("fill", "steelblue")
+            .attr("x", function (d, i) {
+                return padding.left + i * rectStep;
+            })
+            .attr("y", function (d) {
+                return height - padding.bottom - d;
+            })
+            .attr("width", rectWith)
+            .attr("height", function (d) {
+                return d;
+            });
+    var text = svg.selectAll("text")
+            .data(dataSet)
+            .enter()
+            .append("text")
+            .attr("fill", 'white')
+            .attr("font-size", "14px")
+            .attr("text-anchor", "middle")
+            .attr("x", function (d, i) {
+                return padding.left + i * rectStep;
+            })
+            .attr("y", function (d) {
+                return height - padding.bottom - d;
+            })
+            .attr("dx", rectWith / 2)
+            .attr("dy", "1em")
+            .text(function (d) {
+                return d;
+            })
+    function draw() {
+        // 获取矩形的update 部分
+        var updateRect = svg.selectAll("rect")
+                .data(dataSet);
+        // 获取矩形的enter 部分
+        var enterRect = updateRect.enter();
+
+        // 获取矩形的exit部分
+        var exitRect = updateRect.exit();
+
+        // 获取text的update 部分
+        var updateText = svg.selectAll("text")
+                .data(dataSet);
+        // 获取text的enter 部分
+        var enterText = updateRect.enter();
+
+        // 获取text的exit部分
+        var exitText = updateRect.exit();
+
+
+        // 矩形update部分处理
+        updateRect.attr("fill", "steelblue")
+                .attr("x", function (d, i) {
+                    return padding.left + i * rectStep;
+                })
+                .attr("y", function (d) {
+                    return height - padding.bottom - d;
+                })
+                .attr("width", rectWith)
+                .attr("height", function (d) {
+                    return d;
+                });
+        // 矩形enter 部分处理
+        enterRect.append("rect")
+                .attr("fill", "steelblue")
+                .attr("x", function (d, i) {
+                    return padding.left + i * rectStep;
+                })
+                .attr("y", function (d) {
+                    return height - padding.bottom - d;
+                })
+                .attr("width", rectWith)
+                .attr("height", function (d) {
+                    return d;
+                });
+
+        // 矩形 exit 部分处理
+        exitRect.remove();
+    }
+    function mySort() {
+        dataSet.sort(d3.ascending);  // 排序
+        draw();
+    }
+    function myAdd() {
+        dataSet.push(Math.floor(Math.random() * 100));    // 添加一项
+        draw();
+    }
+</script>
+</body>
+</html>
